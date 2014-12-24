@@ -1,4 +1,5 @@
 import re
+import os
 
 from distutils.util import convert_path
 
