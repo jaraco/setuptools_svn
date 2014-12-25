@@ -49,11 +49,7 @@ class TestsFromTestEggInfo:
         version_str = svn_utils.SvnInfo.get_svn_version()
         version = [int(x) for x in version_str.split('.')[:2]]
         if version != [1, 6]:
-            if hasattr(self, 'skipTest'):
-                self.skipTest('')
-            else:
-                sys.stderr.write('\n   Skipping due to SVN Version\n')
-                return
+            pytest.skip("SVN 1.6 required")
 
         self._write_entries(ENTRIES_V10)
         rev = egg_info.egg_info.get_svn_revision()
