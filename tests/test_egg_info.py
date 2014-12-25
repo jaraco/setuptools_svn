@@ -8,7 +8,7 @@ import pkg_resources
 from setuptools_svn import svn_utils
 from tests import environment
 
-ENTRIES_V10 = pkg_resources.resource_string(__name__, 'entries-v10')
+ENTRIES_V10 = pkg_resources.resource_string(__name__, 'data/entries-v10')
 "An entries file generated with svn 1.6.17 against the legacy Setuptools repo"
 
 class TestsFromTestEggInfo:
