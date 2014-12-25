@@ -181,8 +181,8 @@ class TestSvnDummyLegacy(environment.ZippedEnvironment):
     def setUp(self):
         self.base_version = (1, 6)
         self.dataname = "dummy%i%i" % self.base_version
-        self.datafile = os.path.join('setuptools', 'tests',
-                                     'svn_data', self.dataname + ".zip")
+        self.datafile = os.path.join('tests',
+                                     'data', self.dataname + ".zip")
         super(TestSvnDummyLegacy, self).setUp()
 
     def test_sources(self):

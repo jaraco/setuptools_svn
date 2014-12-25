@@ -65,8 +65,8 @@ def _read_utf8_file(path):
 class ParserInfoXML(unittest.TestCase):
 
     def parse_tester(self, svn_name, ext_spaces):
-        path = os.path.join('setuptools', 'tests',
-                            'svn_data', svn_name + '_info.xml')
+        path = os.path.join('tests',
+                            'data', svn_name + '_info.xml')
         #Remember these are pre-generated to test XML parsing
         #  so these paths might not valid on your system
         example_base = "%s_example" % svn_name
@@ -103,8 +103,8 @@ class ParserInfoXML(unittest.TestCase):
 class ParserExternalXML(unittest.TestCase):
 
     def parse_tester(self, svn_name, ext_spaces):
-        path = os.path.join('setuptools', 'tests',
-                            'svn_data', svn_name + '_ext_list.xml')
+        path = os.path.join('tests',
+                            'data', svn_name + '_ext_list.xml')
         example_base = svn_name + '_example'
         data = _read_utf8_file(path)
 
@@ -150,8 +150,8 @@ class ParserExternalXML(unittest.TestCase):
 class ParseExternal(unittest.TestCase):
 
     def parse_tester(self, svn_name, ext_spaces):
-        path = os.path.join('setuptools', 'tests',
-                            'svn_data', svn_name + '_ext_list.txt')
+        path = os.path.join('tests',
+                            'data', svn_name + '_ext_list.txt')
         data = _read_utf8_file(path)
 
         if ext_spaces:
@@ -200,8 +200,8 @@ class TestSvn(environment.ZippedEnvironment):
             self.base_version = (1,8)
 
         self.dataname = "svn%i%i_example" % self.base_version
-        self.datafile = os.path.join('setuptools', 'tests',
-                                     'svn_data', self.dataname + ".zip")
+        self.datafile = os.path.join('tests',
+                                     'data', self.dataname + ".zip")
         super(TestSvn, self).setUp()
 
     @skipIf(not _svn_check, "No SVN to text, in the first place")
