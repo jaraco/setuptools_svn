@@ -1,0 +1,4 @@
+1.0
+===
+
+Initial release, based on implementation extracted from Setuptools 8.3.
