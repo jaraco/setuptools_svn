@@ -5,6 +5,7 @@ import warnings
 
 import pkg_resources
 import pytest
+from setuptools.command import egg_info
 
 from setuptools_svn import svn_utils
 from tests import environment
