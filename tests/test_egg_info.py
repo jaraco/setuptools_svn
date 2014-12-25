@@ -54,7 +54,7 @@ class TestsFromTestEggInfo:
 
         self._write_entries(ENTRIES_V10)
         rev = egg_info.egg_info.get_svn_revision()
-        self.assertEqual(rev, '89000')
+        assert rev == '89000'
 
     def test_version_10_format_legacy_parser(self):
         """
@@ -81,7 +81,7 @@ class TestsFromTestEggInfo:
             if path_variable:
                 os.environ[path_variable] = old_path
 
-        self.assertEqual(rev, '89000')
+        assert rev == '89000'
 
 
 
@@ -138,7 +138,7 @@ class TestSvnDummy(environment.ZippedEnvironment):
             infile.close()
             del infile
 
-        self.assertEqual(DUMMY_SOURCE_TXT, read_contents)
+        assert DUMMY_SOURCE_TXT == read_contents
 
         return data
 
@@ -205,6 +205,6 @@ class TestSvnDummyLegacy(environment.ZippedEnvironment):
             infile.close()
             del infile
 
-        self.assertEqual(DUMMY_SOURCE_TXT, read_contents)
+        assert DUMMY_SOURCE_TXT == read_contents
 
         return data
