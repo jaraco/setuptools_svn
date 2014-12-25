@@ -23,14 +23,14 @@ class TestsFromTestEggInfo:
     Tests copied from TestEggInfo in setuptools.
     """
 
-    def setUp(self):
+    def setup(self):
         self.test_dir = tempfile.mkdtemp()
         os.mkdir(os.path.join(self.test_dir, '.svn'))
 
         self.old_cwd = os.getcwd()
         os.chdir(self.test_dir)
 
-    def tearDown(self):
+    def teardown(self):
         os.chdir(self.old_cwd)
         shutil.rmtree(self.test_dir)
 
