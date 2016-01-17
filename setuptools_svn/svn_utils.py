@@ -10,7 +10,6 @@ import locale
 import codecs
 import unicodedata
 import warnings
-#from setuptools.compat import unicode, PY2
 from setuptools.py31compat import TemporaryDirectory
 from xml.sax.saxutils import unescape
 
