@@ -3,6 +3,11 @@
 
 Moved hosting to Github.
 
+1.0.2
+=====
+
+Restore Python 3 compatibility.
+
 1.0.1
 =====
 
