@@ -10,9 +10,12 @@ import locale
 import codecs
 import unicodedata
 import warnings
-from setuptools.compat import unicode, PY2
+#from setuptools.compat import unicode, PY2
 from setuptools.py31compat import TemporaryDirectory
 from xml.sax.saxutils import unescape
+
+PY3 = sys.version_info >= (3,)
+PY2 = not PY3
 
 try:
     import urlparse
