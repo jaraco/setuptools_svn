@@ -15,6 +15,7 @@ from xml.sax.saxutils import unescape
 
 PY3 = sys.version_info >= (3,)
 PY2 = not PY3
+text_type = str if PY3 else unicode
 
 try:
     import urlparse
@@ -122,7 +123,7 @@ def decode_as_string(text, encoding=None):
     if encoding is None:
         encoding = _console_encoding
 
-    if not isinstance(text, unicode):
+    if not isinstance(text, text_type):
         text = text.decode(encoding)
 
     text = unicodedata.normalize('NFC', text)
