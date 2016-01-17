@@ -8,7 +8,7 @@ extensions = [
 ]
 
 # General information about the project.
-project = 'skeleton'
+project = 'setuptools_scm'
 copyright = '2016 Jason R. Coombs'
 
 # The short X.Y version.

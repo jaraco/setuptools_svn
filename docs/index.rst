@@ -1,4 +1,4 @@
-Welcome to skeleton documentation!
+Welcome to setuptools_scm documentation!
 ========================================
 
 .. toctree::
@@ -7,7 +7,7 @@ Welcome to skeleton documentation!
    history
 
 
-.. automodule:: skeleton
+.. automodule:: setuptools_scm
     :members:
     :undoc-members:
     :show-inheritance:
