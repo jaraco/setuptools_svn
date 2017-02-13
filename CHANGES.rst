@@ -1,3 +1,9 @@
+1.2
+===
+
+Refresh project skeleton and enable continuous integration and
+automated deployments.
+
 1.1
 ===
 
