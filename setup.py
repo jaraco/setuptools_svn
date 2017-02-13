@@ -20,7 +20,7 @@ params = dict(
 	description=description or name,
 	long_description=long_description,
 	url="https://github.com/jaraco/" + name,
-	packages=setuptools.find_packages(),
+	packages=setuptools.find_packages(exclude=['tests']),
 	include_package_data=True,
 	namespace_packages=name.split('.')[:-1],
 	install_requires=[
