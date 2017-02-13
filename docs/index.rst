@@ -1,4 +1,4 @@
-Welcome to setuptools_scm documentation!
+Welcome to setuptools_svn documentation!
 ========================================
 
 .. toctree::
@@ -7,7 +7,7 @@ Welcome to setuptools_scm documentation!
    history
 
 
-.. automodule:: setuptools_scm
+.. automodule:: setuptools_svn
     :members:
     :undoc-members:
     :show-inheritance:
