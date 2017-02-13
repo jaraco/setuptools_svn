@@ -6,7 +6,6 @@ import os
 import subprocess
 import sys
 import unittest
-from setuptools.compat import unicode, unichr
 
 from setuptools_svn import svn_utils
 from setuptools.tests.py26compat import skipIf
@@ -115,19 +114,16 @@ class ParserExternalXML(unittest.TestCase):
             folder2 = 'third_party2'
             folder3 = 'third_party3'
 
+        # folder is third_party大介
+        folder = u'third_party大介'
         expected = set([
             os.sep.join((example_base, folder2)),
             os.sep.join((example_base, folder3)),
-            # folder is third_party大介
-            os.sep.join((example_base,
-                       unicode('third_party') +
-                       unichr(0x5927) + unichr(0x4ecb))),
+            os.sep.join((example_base, folder)),
             os.sep.join((example_base, 'folder', folder2)),
             os.sep.join((example_base, 'folder', folder3)),
-            os.sep.join((example_base, 'folder',
-                       unicode('third_party') +
-                       unichr(0x5927) + unichr(0x4ecb))),
-            ])
+            os.sep.join((example_base, 'folder', folder)),
+        ])
 
         expected = set(os.path.normpath(x) for x in expected)
         dir_base = os.sep.join(('C:', 'development', 'svn_example'))
