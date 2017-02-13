@@ -1,10 +1,9 @@
 import os
 import re
 
-from setuptools.tests.py26compat import skipIf
-
 from tests import environment
 from tests import test_svn
+from tests.test_svn import needs_svn
 import setuptools_svn
 from setuptools_svn import svn_utils
 
@@ -99,7 +98,7 @@ class TestSvn(environment.ZippedEnvironment):
                                      'data', self.dataname + ".zip")
         super(TestSvn, self).setUp()
 
-    @skipIf(not test_svn._svn_check, "No SVN to text, in the first place")
+    @needs_svn
     def test_walksvn(self):
         if self.base_version >= (1, 6):
             folder2 = 'third party2'
