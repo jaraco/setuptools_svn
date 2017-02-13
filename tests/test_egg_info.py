@@ -15,6 +15,7 @@ ENTRIES_V10 = pkg_resources.resource_string(__name__, 'data/entries-v10')
 "An entries file generated with svn 1.6.17 against the legacy Setuptools repo"
 
 
+@pytest.mark.xfail(reason="#2")
 class TestsFromTestEggInfo:
     """
     Tests copied from TestEggInfo in setuptools.
@@ -96,6 +97,7 @@ dummy.egg-info/dependency_links.txt
 dummy.egg-info/top_level.txt"""
 
 
+@pytest.mark.xfail(reason="#2")
 class TestSvnDummy(environment.ZippedEnvironment):
 
     def setUp(self):
