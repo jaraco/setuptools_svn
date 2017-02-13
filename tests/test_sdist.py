@@ -2,7 +2,6 @@ import os
 import re
 
 from tests import environment
-from tests import test_svn
 from tests.test_svn import needs_svn
 import setuptools_svn
 from setuptools_svn import svn_utils
