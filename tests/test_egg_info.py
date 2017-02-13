@@ -9,14 +9,10 @@ from setuptools.command import egg_info
 
 from setuptools_svn import svn_utils
 from tests import environment
-from tests import test_svn
+from tests.test_svn import needs_svn
 
 ENTRIES_V10 = pkg_resources.resource_string(__name__, 'data/entries-v10')
 "An entries file generated with svn 1.6.17 against the legacy Setuptools repo"
-
-
-require_svn = pytest.mark.skipif(not test_svn._svn_check,
-    reason="SVN command required")
 
 
 class TestsFromTestEggInfo:
@@ -41,7 +37,7 @@ class TestsFromTestEggInfo:
         entries_f.write(entries)
         entries_f.close()
 
-    @require_svn
+    @needs_svn
     def test_version_10_format(self):
         """
         """
@@ -122,7 +118,7 @@ class TestSvnDummy(environment.ZippedEnvironment):
                                      'svn_data', self.dataname + ".zip")
         super(TestSvnDummy, self).setUp()
 
-    @require_svn
+    @needs_svn
     def test_sources(self):
         code, data = environment.run_setup_py(["sdist"],
                                               pypath=self.old_cwd,
@@ -142,7 +138,7 @@ class TestSvnDummy(environment.ZippedEnvironment):
 
         return data
 
-    @require_svn
+    @needs_svn
     def test_svn_tags(self):
         code, data = environment.run_setup_py(["egg_info",
                                                "--tag-svn-revision"],
@@ -161,7 +157,7 @@ class TestSvnDummy(environment.ZippedEnvironment):
 
         self.assertTrue("Version: 0.1.1.post1\n" in read_contents)
 
-    @require_svn
+    @needs_svn
     def test_no_tags(self):
         code, data = environment.run_setup_py(["egg_info"],
                                               pypath=self.old_cwd,
