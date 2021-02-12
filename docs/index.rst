@@ -1,5 +1,5 @@
-Welcome to setuptools_svn documentation!
-========================================
+Welcome to |project| documentation!
+===================================
 
 .. toctree::
    :maxdepth: 1
