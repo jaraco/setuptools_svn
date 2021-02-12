@@ -503,7 +503,7 @@ class SVNEntriesFileText(SVNEntriesFile):
         try:
             # remove the SVN version number from the first line
             svn_version = int(sections[0].pop(0))
-            if not svn_version in self.known_svn_versions.values():
+            if svn_version not in self.known_svn_versions.values():
                 log.warn("Unknown subversion verson %d", svn_version)
         except ValueError:
             return
@@ -527,7 +527,9 @@ class SVNEntriesFileText(SVNEntriesFile):
         return rev_numbers
 
     def get_undeleted_records(self):
-        undeleted = lambda s: s and s[0] and (len(s) < 6 or s[5] != 'delete')
+        def undeleted(s):
+            return s and s[0] and (len(s) < 6 or s[5] != 'delete')
+
         result = [section[0] for section in self.get_sections() if undeleted(section)]
         return result
 

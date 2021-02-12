@@ -37,7 +37,7 @@ class ZippedEnvironment(unittest.TestCase):
         self.old_cwd = os.getcwd()
 
         self.temp_dir = tempfile.mkdtemp()
-        zip_file, source, target = [None, None, None]
+        zip_file = None
         try:
             zip_file = zipfile.ZipFile(self.datafile)
             for files in zip_file.namelist():
