@@ -1,5 +1,3 @@
-from __future__ import absolute_import
-
 import os
 import re
 import sys
@@ -10,17 +8,9 @@ import locale
 import codecs
 import unicodedata
 import warnings
-from setuptools.py31compat import TemporaryDirectory
+import tempfile
 from xml.sax.saxutils import unescape
-
-PY3 = sys.version_info >= (3,)
-PY2 = not PY3
-text_type = str if PY3 else unicode
-
-try:
-    import urlparse
-except ImportError:
-    import urllib.parse as urlparse
+import urllib.parse
 
 from subprocess import Popen as _Popen, PIPE as _PIPE
 
@@ -65,12 +55,7 @@ def _get_target_property(target):
 
 
 def _get_xml_data(decoded_str):
-    if PY2:
-        #old versions want an encoded string
-        data = decoded_str.encode('utf-8')
-    else:
-        data = decoded_str
-    return data
+    return decoded_str
 
 
 def joinpath(prefix, *suffix):
@@ -123,7 +108,7 @@ def decode_as_string(text, encoding=None):
     if encoding is None:
         encoding = _console_encoding
 
-    if not isinstance(text, text_type):
+    if not isinstance(text, str):
         text = text.decode(encoding)
 
     text = unicodedata.normalize('NFC', text)
@@ -185,17 +170,11 @@ def parse_external_prop(lines):
         if not line:
             continue
 
-        if PY2:
-            #shlex handles NULLs just fine and shlex in 2.7 tries to encode
-            #as ascii automatiically
-            line = line.encode('utf-8')
         line = shlex.split(line)
-        if PY2:
-            line = [x.decode('utf-8') for x in line]
 
         #EXT_FOLDERNAME is either the first or last depending on where
         #the URL falls
-        if urlparse.urlsplit(line[-1])[0]:
+        if urllib.parse.urlsplit(line[-1])[0]:
             external = line[0]
         else:
             external = line[-1]
@@ -240,7 +219,7 @@ class SvnInfo(object):
         # This is needed because .svn always creates .subversion and
         # some operating systems do not handle dot directory correctly.
         # Real queries in real svn repos with be concerned with it creation
-        with TemporaryDirectory() as tempdir:
+        with tempfile.TemporaryDirectory() as tempdir:
             code, data = _run_command(['svn',
                                        '--config-dir', tempdir,
                                        '--version',
@@ -266,7 +245,7 @@ class SvnInfo(object):
         # This is needed because .svn always creates .subversion and
         # some operating systems do not handle dot directory correctly.
         # Real queries in real svn repos with be concerned with it creation
-        with TemporaryDirectory() as tempdir:
+        with tempfile.TemporaryDirectory() as tempdir:
             code, data = _run_command(['svn',
                                        '--config-dir', tempdir,
                                        'info', normdir])
