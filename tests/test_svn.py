@@ -16,18 +16,20 @@ from tests import environment
 
 def _do_svn_check():
     try:
-        subprocess.check_call(["svn", "--version"],
-                              shell=(sys.platform == 'win32'))
+        subprocess.check_call(["svn", "--version"], shell=(sys.platform == 'win32'))
         return True
     except (OSError, subprocess.CalledProcessError):
         return False
+
+
 _svn_check = _do_svn_check()
 
-needs_svn = pytest.mark.skipif(not _svn_check, reason="No SVN to text, in the first place")
+needs_svn = pytest.mark.skipif(
+    not _svn_check, reason="No SVN to text, in the first place"
+)
 
 
 class TestSvnVersion(unittest.TestCase):
-
     def test_no_svn_found(self):
         path_variable = None
         for env in os.environ:
@@ -50,6 +52,7 @@ class TestSvnVersion(unittest.TestCase):
         version = svn_utils.SvnInfo.get_svn_version()
         self.assertNotEqual(version, '')
 
+
 def _read_utf8_file(path):
     fileobj = None
     try:
@@ -62,24 +65,23 @@ def _read_utf8_file(path):
 
 
 class ParserInfoXML(unittest.TestCase):
-
     def parse_tester(self, svn_name, ext_spaces):
-        path = os.path.join('tests',
-                            'data', svn_name + '_info.xml')
-        #Remember these are pre-generated to test XML parsing
+        path = os.path.join('tests', 'data', svn_name + '_info.xml')
+        # Remember these are pre-generated to test XML parsing
         #  so these paths might not valid on your system
         example_base = "%s_example" % svn_name
 
         data = _read_utf8_file(path)
 
-        expected = set([
-            ("\\".join((example_base, 'a file')), 'file'),
-            ("\\".join((example_base, 'folder')), 'dir'),
-            ("\\".join((example_base, 'folder', 'lalala.txt')), 'file'),
-            ("\\".join((example_base, 'folder', 'quest.txt')), 'file'),
-            ])
-        self.assertEqual(set(x for x in svn_utils.parse_dir_entries(data)),
-                         expected)
+        expected = set(
+            [
+                ("\\".join((example_base, 'a file')), 'file'),
+                ("\\".join((example_base, 'folder')), 'dir'),
+                ("\\".join((example_base, 'folder', 'lalala.txt')), 'file'),
+                ("\\".join((example_base, 'folder', 'quest.txt')), 'file'),
+            ]
+        )
+        self.assertEqual(set(x for x in svn_utils.parse_dir_entries(data)), expected)
 
     def test_svn13(self):
         self.parse_tester('svn13', False)
@@ -99,11 +101,10 @@ class ParserInfoXML(unittest.TestCase):
     def test_svn18(self):
         self.parse_tester('svn18', True)
 
-class ParserExternalXML(unittest.TestCase):
 
+class ParserExternalXML(unittest.TestCase):
     def parse_tester(self, svn_name, ext_spaces):
-        path = os.path.join('tests',
-                            'data', svn_name + '_ext_list.xml')
+        path = os.path.join('tests', 'data', svn_name + '_ext_list.xml')
         example_base = svn_name + '_example'
         data = _read_utf8_file(path)
 
@@ -116,19 +117,22 @@ class ParserExternalXML(unittest.TestCase):
 
         # folder is third_party大介
         folder = u'third_party大介'
-        expected = set([
-            os.sep.join((example_base, folder2)),
-            os.sep.join((example_base, folder3)),
-            os.sep.join((example_base, folder)),
-            os.sep.join((example_base, 'folder', folder2)),
-            os.sep.join((example_base, 'folder', folder3)),
-            os.sep.join((example_base, 'folder', folder)),
-        ])
+        expected = set(
+            [
+                os.sep.join((example_base, folder2)),
+                os.sep.join((example_base, folder3)),
+                os.sep.join((example_base, folder)),
+                os.sep.join((example_base, 'folder', folder2)),
+                os.sep.join((example_base, 'folder', folder3)),
+                os.sep.join((example_base, 'folder', folder)),
+            ]
+        )
 
         expected = set(os.path.normpath(x) for x in expected)
         dir_base = os.sep.join(('C:', 'development', 'svn_example'))
-        self.assertEqual(set(x for x
-            in svn_utils.parse_externals_xml(data, dir_base)), expected)
+        self.assertEqual(
+            set(x for x in svn_utils.parse_externals_xml(data, dir_base)), expected
+        )
 
     def test_svn15(self):
         self.parse_tester('svn15', False)
@@ -144,20 +148,18 @@ class ParserExternalXML(unittest.TestCase):
 
 
 class ParseExternal(unittest.TestCase):
-
     def parse_tester(self, svn_name, ext_spaces):
-        path = os.path.join('tests',
-                            'data', svn_name + '_ext_list.txt')
+        path = os.path.join('tests', 'data', svn_name + '_ext_list.txt')
         data = _read_utf8_file(path)
 
         if ext_spaces:
-            expected = set(['third party2', 'third party3',
-                            'third party3b', 'third_party'])
+            expected = set(
+                ['third party2', 'third party3', 'third party3b', 'third_party']
+            )
         else:
             expected = set(['third_party2', 'third_party3', 'third_party'])
 
-        self.assertEqual(set(x for x in svn_utils.parse_external_prop(data)),
-                         expected)
+        self.assertEqual(set(x for x in svn_utils.parse_external_prop(data)), expected)
 
     def test_svn13(self):
         self.parse_tester('svn13', False)
@@ -179,7 +181,6 @@ class ParseExternal(unittest.TestCase):
 
 
 class TestSvn(environment.ZippedEnvironment):
-
     def setUp(self):
         version = svn_utils.SvnInfo.get_svn_version()
         if not version:  # empty or null
@@ -189,15 +190,14 @@ class TestSvn(environment.ZippedEnvironment):
 
         self.base_version = tuple([int(x) for x in version.split('.')[:2]])
 
-        if self.base_version < (1,3):
+        if self.base_version < (1, 3):
             raise ValueError('Insufficient SVN Version %s' % version)
-        elif self.base_version >= (1,9):
-            #trying the latest version
-            self.base_version = (1,8)
+        elif self.base_version >= (1, 9):
+            # trying the latest version
+            self.base_version = (1, 8)
 
         self.dataname = "svn%i%i_example" % self.base_version
-        self.datafile = os.path.join('tests',
-                                     'data', self.dataname + ".zip")
+        self.datafile = os.path.join('tests', 'data', self.dataname + ".zip")
         super(TestSvn, self).setUp()
 
     @needs_svn
@@ -207,36 +207,41 @@ class TestSvn(environment.ZippedEnvironment):
 
     @needs_svn
     def test_entries(self):
-        expected = set([
-            (os.path.join('a file'), 'file'),
-            (os.path.join('folder'), 'dir'),
-            (os.path.join('folder', 'lalala.txt'), 'file'),
-            (os.path.join('folder', 'quest.txt'), 'file'),
-            #The example will have a deleted file (or should)
-            #but shouldn't return it
-            ])
+        expected = set(
+            [
+                (os.path.join('a file'), 'file'),
+                (os.path.join('folder'), 'dir'),
+                (os.path.join('folder', 'lalala.txt'), 'file'),
+                (os.path.join('folder', 'quest.txt'), 'file'),
+                # The example will have a deleted file (or should)
+                # but shouldn't return it
+            ]
+        )
         info = svn_utils.SvnInfo.load('.')
         self.assertEqual(set(x for x in info.entries), expected)
 
     @needs_svn
     def test_externals(self):
-        if self.base_version >= (1,6):
+        if self.base_version >= (1, 6):
             folder2 = 'third party2'
             folder3 = 'third party3'
         else:
             folder2 = 'third_party2'
             folder3 = 'third_party3'
 
-        expected = set([
-            os.path.join(folder2),
-            os.path.join(folder3),
-            os.path.join('third_party'),
-            os.path.join('folder', folder2),
-            os.path.join('folder', folder3),
-            os.path.join('folder', 'third_party'),
-            ])
+        expected = set(
+            [
+                os.path.join(folder2),
+                os.path.join(folder3),
+                os.path.join('third_party'),
+                os.path.join('folder', folder2),
+                os.path.join('folder', folder3),
+                os.path.join('folder', 'third_party'),
+            ]
+        )
         info = svn_utils.SvnInfo.load('.')
         self.assertEqual(set([x for x in info.externals]), expected)
+
 
 def test_suite():
     return unittest.defaultTestLoader.loadTestsFromName(__name__)

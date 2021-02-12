@@ -6,7 +6,6 @@ from distutils.util import convert_path
 from setuptools_svn import svn_utils
 
 
-
 # TODO will need test case
 class re_finder(object):
     """

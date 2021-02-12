@@ -6,18 +6,17 @@ from tests.test_svn import needs_svn
 import setuptools_svn
 from setuptools_svn import svn_utils
 
-class TestDummyOutput(environment.ZippedEnvironment):
 
+class TestDummyOutput(environment.ZippedEnvironment):
     def setUp(self):
-        self.datafile = os.path.join('tests',
-                                     'data', "dummy.zip")
+        self.datafile = os.path.join('tests', 'data', "dummy.zip")
         self.dataname = "dummy"
         super(TestDummyOutput, self).setUp()
 
     def _run(self):
-        code, data = environment.run_setup_py(["sdist"],
-                                              pypath=self.old_cwd,
-                                              data_stream=0)
+        code, data = environment.run_setup_py(
+            ["sdist"], pypath=self.old_cwd, data_stream=0
+        )
         if code:
             info = "DIR: " + os.path.abspath('.')
             info += "\n  SDIST RETURNED: %i\n\n" % code
@@ -66,8 +65,7 @@ class TestDummyOutput(environment.ZippedEnvironment):
                     found = True
                     break
             if not found:
-                raise AssertionError("Unexpexected: %s\n-in-\n%s"
-                                     % (line, data))
+                raise AssertionError("Unexpexected: %s\n-in-\n%s" % (line, data))
 
         return data
 
@@ -76,7 +74,6 @@ class TestDummyOutput(environment.ZippedEnvironment):
 
 
 class TestSvn(environment.ZippedEnvironment):
-
     def setUp(self):
         version = svn_utils.SvnInfo.get_svn_version()
         if not version:  # None or Empty
@@ -93,8 +90,7 @@ class TestSvn(environment.ZippedEnvironment):
             self.base_version = (1, 8)
 
         self.dataname = "svn%i%i_example" % self.base_version
-        self.datafile = os.path.join('tests',
-                                     'data', self.dataname + ".zip")
+        self.datafile = os.path.join('tests', 'data', self.dataname + ".zip")
         super(TestSvn, self).setUp()
 
     @needs_svn
@@ -107,31 +103,32 @@ class TestSvn(environment.ZippedEnvironment):
             folder3 = 'third_party3'
 
         # TODO is this right
-        expected = set([
-            os.path.join('a file'),
-            os.path.join(folder2, 'Changes.txt'),
-            os.path.join(folder2, 'MD5SUMS'),
-            os.path.join(folder2, 'README.txt'),
-            os.path.join(folder3, 'Changes.txt'),
-            os.path.join(folder3, 'MD5SUMS'),
-            os.path.join(folder3, 'README.txt'),
-            os.path.join(folder3, 'TODO.txt'),
-            os.path.join(folder3, 'fin'),
-            os.path.join('third_party', 'README.txt'),
-            os.path.join('folder', folder2, 'Changes.txt'),
-            os.path.join('folder', folder2, 'MD5SUMS'),
-            os.path.join('folder', folder2, 'WatashiNiYomimasu.txt'),
-            os.path.join('folder', folder3, 'Changes.txt'),
-            os.path.join('folder', folder3, 'fin'),
-            os.path.join('folder', folder3, 'MD5SUMS'),
-            os.path.join('folder', folder3, 'oops'),
-            os.path.join('folder', folder3, 'WatashiNiYomimasu.txt'),
-            os.path.join('folder', folder3, 'ZuMachen.txt'),
-            os.path.join('folder', 'third_party', 'WatashiNiYomimasu.txt'),
-            os.path.join('folder', 'lalala.txt'),
-            os.path.join('folder', 'quest.txt'),
-            # The example will have a deleted file
-            #  (or should) but shouldn't return it
-        ])
+        expected = set(
+            [
+                os.path.join('a file'),
+                os.path.join(folder2, 'Changes.txt'),
+                os.path.join(folder2, 'MD5SUMS'),
+                os.path.join(folder2, 'README.txt'),
+                os.path.join(folder3, 'Changes.txt'),
+                os.path.join(folder3, 'MD5SUMS'),
+                os.path.join(folder3, 'README.txt'),
+                os.path.join(folder3, 'TODO.txt'),
+                os.path.join(folder3, 'fin'),
+                os.path.join('third_party', 'README.txt'),
+                os.path.join('folder', folder2, 'Changes.txt'),
+                os.path.join('folder', folder2, 'MD5SUMS'),
+                os.path.join('folder', folder2, 'WatashiNiYomimasu.txt'),
+                os.path.join('folder', folder3, 'Changes.txt'),
+                os.path.join('folder', folder3, 'fin'),
+                os.path.join('folder', folder3, 'MD5SUMS'),
+                os.path.join('folder', folder3, 'oops'),
+                os.path.join('folder', folder3, 'WatashiNiYomimasu.txt'),
+                os.path.join('folder', folder3, 'ZuMachen.txt'),
+                os.path.join('folder', 'third_party', 'WatashiNiYomimasu.txt'),
+                os.path.join('folder', 'lalala.txt'),
+                os.path.join('folder', 'quest.txt'),
+                # The example will have a deleted file
+                #  (or should) but shouldn't return it
+            ]
+        )
         self.assertEqual(set(x for x in setuptools_svn.find_files()), expected)
-

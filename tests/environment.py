@@ -12,7 +12,7 @@ from subprocess import Popen as _Popen, PIPE as _PIPE
 
 def _remove_dir(target):
 
-    #on windows this seems to a problem
+    # on windows this seems to a problem
     for dir_path, dirs, files in os.walk(target):
         os.chmod(dir_path, stat.S_IWRITE)
         for filename in files:
@@ -50,7 +50,7 @@ class ZippedEnvironment(unittest.TestCase):
         os.chdir(os.path.join(self.temp_dir, self.dataname))
 
     def tearDown(self):
-        #Assume setUp was never completed
+        # Assume setUp was never completed
         if self.dataname is None or self.datafile is None:
             return
 
@@ -59,7 +59,7 @@ class ZippedEnvironment(unittest.TestCase):
                 os.chdir(self.old_cwd)
                 _remove_dir(self.temp_dir)
         except OSError:
-            #sigh?
+            # sigh?
             pass
 
 
@@ -72,8 +72,7 @@ def _which_dirs(cmd):
     return result
 
 
-def run_setup_py(cmd, pypath=None, path=None,
-                 data_stream=0, env=None):
+def run_setup_py(cmd, pypath=None, path=None, data_stream=0, env=None):
     """
     Execution command for tests, separate from those used by the
     code directly to prevent accidental behavior issues
@@ -83,11 +82,11 @@ def run_setup_py(cmd, pypath=None, path=None,
         for envname in os.environ:
             env[envname] = os.environ[envname]
 
-    #override the python path if needed
+    # override the python path if needed
     if pypath is not None:
         env["PYTHONPATH"] = pypath
 
-    #overide the execution path if needed
+    # overide the execution path if needed
     if path is not None:
         env["PATH"] = path
     if not env.get("PATH", ""):
@@ -101,18 +100,22 @@ def run_setup_py(cmd, pypath=None, path=None,
 
     try:
         proc = _Popen(
-            cmd, stdout=_PIPE, stderr=_PIPE, shell=shell, env=env,
+            cmd,
+            stdout=_PIPE,
+            stderr=_PIPE,
+            shell=shell,
+            env=env,
         )
 
         data = proc.communicate()[data_stream]
     except OSError:
         return 1, ''
 
-    #decode the console string if needed
-    if hasattr(data,  "decode"):
+    # decode the console string if needed
+    if hasattr(data, "decode"):
         # use the default encoding
         data = data.decode()
         data = unicodedata.normalize('NFC', data)
 
-    #communciate calls wait()
+    # communciate calls wait()
     return proc.returncode, data

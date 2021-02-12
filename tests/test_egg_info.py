@@ -40,10 +40,9 @@ class TestsFromTestEggInfo:
 
     @needs_svn
     def test_version_10_format(self):
-        """
-        """
-        #keeping this set for 1.6 is a good check on the get_svn_revision
-        #to ensure I return using svnversion what would had been returned
+        """"""
+        # keeping this set for 1.6 is a good check on the get_svn_revision
+        # to ensure I return using svnversion what would had been returned
         version_str = svn_utils.SvnInfo.get_svn_version()
         version = [int(x) for x in version_str.split('.')[:2]]
         if version != [1, 6]:
@@ -54,8 +53,7 @@ class TestsFromTestEggInfo:
         assert rev == '89000'
 
     def test_version_10_format_legacy_parser(self):
-        """
-        """
+        """"""
         path_variable = None
         for env in os.environ:
             if env.lower() == 'path':
@@ -64,7 +62,7 @@ class TestsFromTestEggInfo:
         if path_variable:
             old_path = os.environ[path_variable]
             os.environ[path_variable] = ''
-        #catch_warnings not available until py26
+        # catch_warnings not available until py26
         warning_filters = warnings.filters
         warnings.filters = warning_filters[:]
         try:
@@ -72,14 +70,13 @@ class TestsFromTestEggInfo:
             self._write_entries(ENTRIES_V10)
             rev = egg_info.egg_info.get_svn_revision()
         finally:
-            #restore the warning filters
+            # restore the warning filters
             warnings.filters = warning_filters
-            #restore the os path
+            # restore the os path
             if path_variable:
                 os.environ[path_variable] = old_path
 
         assert rev == '89000'
-
 
 
 DUMMY_SOURCE_TXT = """CHANGES.txt
@@ -99,7 +96,6 @@ dummy.egg-info/top_level.txt"""
 
 @pytest.mark.xfail(reason="#2")
 class TestSvnDummy(environment.ZippedEnvironment):
-
     def setUp(self):
         version = svn_utils.SvnInfo.get_svn_version()
         if not version:  # None or Empty
@@ -112,19 +108,20 @@ class TestSvnDummy(environment.ZippedEnvironment):
         elif self.base_version < (1, 3):
             raise ValueError('Insufficient SVN Version %s' % version)
         elif self.base_version >= (1, 9):
-            #trying the latest version
+            # trying the latest version
             self.base_version = (1, 8)
 
         self.dataname = "dummy%i%i" % self.base_version
-        self.datafile = os.path.join('setuptools', 'tests',
-                                     'svn_data', self.dataname + ".zip")
+        self.datafile = os.path.join(
+            'setuptools', 'tests', 'svn_data', self.dataname + ".zip"
+        )
         super(TestSvnDummy, self).setUp()
 
     @needs_svn
     def test_sources(self):
-        code, data = environment.run_setup_py(["sdist"],
-                                              pypath=self.old_cwd,
-                                              data_stream=1)
+        code, data = environment.run_setup_py(
+            ["sdist"], pypath=self.old_cwd, data_stream=1
+        )
         if code:
             raise AssertionError(data)
 
@@ -142,10 +139,9 @@ class TestSvnDummy(environment.ZippedEnvironment):
 
     @needs_svn
     def test_svn_tags(self):
-        code, data = environment.run_setup_py(["egg_info",
-                                               "--tag-svn-revision"],
-                                              pypath=self.old_cwd,
-                                              data_stream=1)
+        code, data = environment.run_setup_py(
+            ["egg_info", "--tag-svn-revision"], pypath=self.old_cwd, data_stream=1
+        )
         if code:
             raise AssertionError(data)
 
@@ -161,9 +157,9 @@ class TestSvnDummy(environment.ZippedEnvironment):
 
     @needs_svn
     def test_no_tags(self):
-        code, data = environment.run_setup_py(["egg_info"],
-                                              pypath=self.old_cwd,
-                                              data_stream=1)
+        code, data = environment.run_setup_py(
+            ["egg_info"], pypath=self.old_cwd, data_stream=1
+        )
         if code:
             raise AssertionError(data)
 
@@ -179,19 +175,16 @@ class TestSvnDummy(environment.ZippedEnvironment):
 
 
 class TestSvnDummyLegacy(environment.ZippedEnvironment):
-
     def setUp(self):
         self.base_version = (1, 6)
         self.dataname = "dummy%i%i" % self.base_version
-        self.datafile = os.path.join('tests',
-                                     'data', self.dataname + ".zip")
+        self.datafile = os.path.join('tests', 'data', self.dataname + ".zip")
         super(TestSvnDummyLegacy, self).setUp()
 
     def test_sources(self):
-        code, data = environment.run_setup_py(["sdist"],
-                                              pypath=self.old_cwd,
-                                              path="",
-                                              data_stream=1)
+        code, data = environment.run_setup_py(
+            ["sdist"], pypath=self.old_cwd, path="", data_stream=1
+        )
         if code:
             raise AssertionError(data)
 
