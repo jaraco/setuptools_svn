@@ -1,12 +1,21 @@
 .. image:: https://img.shields.io/pypi/v/skeleton.svg
-   :target: https://pypi.org/project/skeleton
+   :target: `PyPI link`_
 
 .. image:: https://img.shields.io/pypi/pyversions/skeleton.svg
+   :target: `PyPI link`_
 
-.. image:: https://img.shields.io/pypi/dm/skeleton.svg
+.. _PyPI link: https://pypi.org/project/skeleton
 
-.. image:: https://img.shields.io/travis/jaraco/skeleton/master.svg
-   :target: http://travis-ci.org/jaraco/skeleton
+.. image:: https://github.com/jaraco/skeleton/workflows/Automated%20Tests/badge.svg
+   :target: https://github.com/jaraco/skeleton/actions?query=workflow%3A%22Automated+Tests%22
+   :alt: Automated Tests
+
+.. image:: https://img.shields.io/badge/code%20style-black-000000.svg
+   :target: https://github.com/psf/black
+   :alt: Code style: Black
+
+.. .. image:: https://readthedocs.org/projects/skeleton/badge/?version=latest
+..    :target: https://skeleton.readthedocs.io/en/latest/?badge=latest
 
 Subversion support for Setuptools
 
@@ -16,13 +25,6 @@ the `Setuptools documentation
 
 This package is for use by package authors when distributing their
 Subversion-hosted project.
-
-License
-=======
-
-License is indicated in the project metadata (typically one or more
-of the Trove classifiers). For more details, see `this explanation
-<https://github.com/jaraco/skeleton/issues/1>`_.
 
 Usage
 =====
