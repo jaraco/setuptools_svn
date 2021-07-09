@@ -35,6 +35,7 @@ class TestDummyOutput(environment.ZippedEnvironment):
             r"writing manifest file 'dummy\.egg-info",
             r"reading manifest file 'dummy\.egg-info",
             r"reading manifest template 'MANIFEST\.in'",
+            "adding license file 'LICENSE'",
             r"writing manifest file 'dummy\.egg-info",
             "creating dummy-0.1.1",
             r"making hard links in dummy-0\.1\.1",
