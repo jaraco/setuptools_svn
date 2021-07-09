@@ -3,7 +3,11 @@ import tempfile
 import shutil
 import warnings
 
-import pkg_resources
+try:
+    from importlib.resources import files  # type: ignore
+except ImportError:
+    from importlib_resources import files  # type: ignore
+
 import pytest
 from setuptools.command import egg_info
 
@@ -11,7 +15,7 @@ from setuptools_svn import svn_utils
 from tests import environment
 from tests.test_svn import needs_svn
 
-ENTRIES_V10 = pkg_resources.resource_string(__name__, 'data/entries-v10')
+ENTRIES_V10 = files('tests').joinpath('data/entries-v10').read_text()
 "An entries file generated with svn 1.6.17 against the legacy Setuptools repo"
 
 
@@ -40,7 +44,7 @@ class TestsFromTestEggInfo:
 
     @needs_svn
     def test_version_10_format(self):
-        """"""
+        """ """
         # keeping this set for 1.6 is a good check on the get_svn_revision
         # to ensure I return using svnversion what would had been returned
         version_str = svn_utils.SvnInfo.get_svn_version()
@@ -53,7 +57,7 @@ class TestsFromTestEggInfo:
         assert rev == '89000'
 
     def test_version_10_format_legacy_parser(self):
-        """"""
+        """ """
         path_variable = None
         for env in os.environ:
             if env.lower() == 'path':
